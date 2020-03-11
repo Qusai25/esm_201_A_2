@@ -51,4 +51,30 @@ ggplot(data = fert, aes(x = year, y = kg_h)) +
 
 ```
 
+```{r}
+
+
+# rename commodity to crop 
+grain_c <- read_csv("grain_2020.csv") %>% 
+  clean_names() %>% 
+  rename(crop = commodity) %>% 
+  filter(crop == "Corn")
+
+fert_c <- read_csv("fertilizer_2020.csv") %>% 
+  clean_names() %>% 
+  filter(crop == "Corn")
+  
+
+#join tables
+fert_grain <- full_join(grain_c,fert_c, by = "crop", "year") 
+  
+
+ggplot(data = fert, aes(x = year, y = kg_h)) + 
+         geom_line(aes(color = fertilizer)) +
+  facet_wrap(~ crop, scales = "free", nrow = 3) +
+  labs(x = "Years", y = "Fertilizer Use (kilogram per hectare)", title = "Fertilizer Use by Time", caption = "Figure 2: Graph of fertilizer Use (kilogram per hectare) \n of Wheat, Soybeans, and Corn by time") +
+  theme(plot.caption = element_text(hjust = 0)) +
+   scale_x_continuous(limits = c(1967, 2006))
+
+```
 
