@@ -19,7 +19,11 @@ grains <- read_csv("grain_2020.csv") %>%
 ##
 
 ggplot(data = grains, aes(x = year, y = yield)) + 
-         geom_line(aes(color = commodity))
+         geom_line(aes(color = commodity)) +
+  facet_wrap(~ commodity) +
+  labs(x = "Years", y = "Yield (Bushels per hectare)", title = "Crop Yields by Time", caption = "Figure 1: Graph of crop yields \n (Bushels per hectare) of Barley, Corn, Oats, and Sorghum by time") +
+  theme(plot.caption = element_text(hjust = 0))
+
   
 
 
