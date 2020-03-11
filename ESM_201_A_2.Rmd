@@ -3,9 +3,7 @@ title: "ESM_201_A_2"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
 ```{r}
 
@@ -20,7 +18,7 @@ grains <- read_csv("grain_2020.csv") %>%
 
 ggplot(data = grains, aes(x = year, y = yield)) + 
          geom_line(aes(color = commodity)) +
-  facet_wrap(~ commodity) +
+  facet_wrap(~ commodity, scales = "free") +
   labs(x = "Years", y = "Yield (Bushels per hectare)", title = "Crop Yields by Time", caption = "Figure 1: Graph of crop yields \n (Bushels per hectare) of Barley, Corn, Oats, and Sorghum by time") +
   theme(plot.caption = element_text(hjust = 0))
 
@@ -29,8 +27,28 @@ ggplot(data = grains, aes(x = year, y = yield)) +
 
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+#1b)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+According to the graphs, it looks as if Barley and Corn have exponential growth. However, Oats and Sorghum have logistic growth.
+
+
+#2a)
+
+```{r}
+
+fert <- read_csv("fertilizer_2020.csv") %>% 
+  clean_names()
+  
+##
+
+ggplot(data = fert, aes(x = year, y = kg_h)) + 
+         geom_line(aes(color = fertilizer)) +
+  facet_wrap(~ crop, scales = "free", nrow = 3) +
+  labs(x = "Years", y = "Fertilizer Use (kilogram per hectare)", title = "Fertilizer Use by Time", caption = "Figure 2: Graph of fertilizer Use (kilogram per hectare) \n of Wheat, Soybeans, and Corn by time") +
+  theme(plot.caption = element_text(hjust = 0)) +
+   scale_x_continuous(limits = c(1967, 2006))
+
+```
+
+
