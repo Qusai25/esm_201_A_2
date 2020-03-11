@@ -16,6 +16,7 @@ library(janitor)
 grains <- read_csv("grain_2020.csv") %>% 
   clean_names()
   
+#
 
 ggplot(data = grains, aes(x = year, y = yield)) + 
          geom_line(aes(color = commodity))
