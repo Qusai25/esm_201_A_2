@@ -30,7 +30,7 @@ ggplot(data = grains, aes(x = year, y = yield)) +
 
 #1b)
 
-According to the graphs, it looks as if Barley and Corn have exponential growth. However, Oats and Sorghum have logistic growth.
+According to the graphs, it looks as if Barley, Oats, and Corn  are Linear, Lower Plateau(LLP). However,Sorghum looks like it could be Linear, upper plateau(LUP) or maybe even Linear piecewise (PW) statistic model.
 
 
 #2a)
@@ -44,12 +44,18 @@ fert <- read_csv("fertilizer_2020.csv") %>%
 
 ggplot(data = fert, aes(x = year, y = kg_h)) + 
          geom_line(aes(color = fertilizer)) +
-  facet_wrap(~ crop, scales = "free", nrow = 3) +
+  facet_wrap(~ crop) +
   labs(x = "Years", y = "Fertilizer Use (kilogram per hectare)", title = "Fertilizer Use by Time", caption = "Figure 2: Graph of fertilizer Use (kilogram per hectare) \n of Wheat, Soybeans, and Corn by time") +
   theme(plot.caption = element_text(hjust = 0)) +
    scale_x_continuous(limits = c(1967, 2006))
 
 ```
+
+
+
+2b)
+
+
 
 ```{r}
 
@@ -58,7 +64,9 @@ ggplot(data = fert, aes(x = year, y = kg_h)) +
 grain_c <- read_csv("grain_2020.csv") %>% 
   clean_names() %>% 
   rename(crop = commodity) %>% 
-  filter(crop == "Corn")
+  filter(crop == "Corn") %>% 
+  filter(year %in% c("1964":"2016")) %>% 
+  group_by(year)
 
 fert_c <- read_csv("fertilizer_2020.csv") %>% 
   clean_names() %>% 
@@ -66,15 +74,14 @@ fert_c <- read_csv("fertilizer_2020.csv") %>%
   
 
 #join tables
-fert_grain <- full_join(grain_c,fert_c, by = "crop", "year") 
+fert_grain <- full_join(grain_c,fert_c, by = "year") 
   
 
-ggplot(data = fert, aes(x = year, y = kg_h)) + 
-         geom_line(aes(color = fertilizer)) +
-  facet_wrap(~ crop, scales = "free", nrow = 3) +
-  labs(x = "Years", y = "Fertilizer Use (kilogram per hectare)", title = "Fertilizer Use by Time", caption = "Figure 2: Graph of fertilizer Use (kilogram per hectare) \n of Wheat, Soybeans, and Corn by time") +
-  theme(plot.caption = element_text(hjust = 0)) +
-   scale_x_continuous(limits = c(1967, 2006))
+ggplot(data = fert_grain, aes(x = kg_h, y = yield)) + 
+         geom_point(aes(color = fertilizer))# +
+# labs(x = "Years", y = "Fertilizer Use (kilogram per hectare)", title = "Fertilizer Use by Time", caption = "Figure 2: Graph of fertilizer Use (kilogram per hectare) \n of Wheat, Soybeans, and Corn by time") #+
+ #theme(plot.caption = element_text(hjust = 0)) +
+  # scale_x_continuous(limits = c(1964, 2006))
 
 ```
 
